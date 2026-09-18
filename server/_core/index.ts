@@ -59,7 +59,7 @@ export async function createApp(server?: Server) {
         github_vercel_provisioning: provision ? "ok" : "not_configured",
         backup: backup ? "ok" : "not_configured",
         jwt: Boolean(ENV.cookieSecret) ? "ok" : "missing",
-        oauth: Boolean(ENV.oAuthServerUrl && ENV.appId && process.env.VITE_OAUTH_PORTAL_URL) ? "ok" : "not_configured",
+        oauth: Boolean(ENV.oAuthServerUrl && ENV.appId && ENV.oauthPortalUrl && ENV.manusClientSecret) ? "ok" : "not_configured",
         publicAppUrl: Boolean(ENV.appOrigin) ? "ok" : "missing",
       },
       integrations: {
@@ -69,7 +69,7 @@ export async function createApp(server?: Server) {
         paypal: Boolean(ENV.paypalClientId && ENV.paypalClientSecret && ENV.appOrigin),
         github: Boolean(ENV.githubToken && ENV.githubOwner),
         vercel: Boolean(ENV.vercelToken),
-        oauth: Boolean(ENV.oAuthServerUrl && ENV.appId && process.env.VITE_OAUTH_PORTAL_URL),
+        oauth: Boolean(ENV.oAuthServerUrl && ENV.appId && ENV.oauthPortalUrl && ENV.manusClientSecret),
         externalProvisioning: Boolean(ENV.provisioningApiUrl && ENV.provisioningApiKey),
         automationWorker: Boolean(ENV.automationWorkerSecret),
         backup,
