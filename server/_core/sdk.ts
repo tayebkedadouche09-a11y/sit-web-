@@ -26,6 +26,8 @@ export type SessionPayload = {
 
 const OAUTH_TOKEN_PATH = "/oauth/token";
 const USER_ME_PATH = "/v2/user.me";
+const GET_USER_INFO_WITH_JWT_PATH =
+  "/webdev.v1.WebDevAuthPublicService/GetUserInfoWithJwt";
 
 class OAuthService {
   constructor(private client: ReturnType<typeof axios.create>) {
@@ -154,6 +156,11 @@ class SDKServer {
    */
   async getUserInfo(accessToken: string): Promise<GetUserInfoResponse> {
     return this.oauthService.getUserInfoByToken(accessToken);
+  }
+
+  /** Identify the account owner for the server-side Manus API key. */
+  async getUserInfoByApiKey(): Promise<GetUserInfoResponse> {
+    return this.oauthService.getUserInfoByApiKey();
   }
 
   private parseCookies(cookieHeader: string | undefined) {
