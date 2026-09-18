@@ -185,7 +185,7 @@ async function putToS3(key: string, body: Buffer, contentType: string): Promise<
       secretAccessKey: ENV.s3SecretAccessKey!,
     },
   });
-  await client.send(
+  await (client as any).send(
     new PutObjectCommand({
       Bucket: ENV.s3Bucket!,
       Key: key,
