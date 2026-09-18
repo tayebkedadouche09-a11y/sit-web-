@@ -35,7 +35,7 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 export async function createApp(server?: Server) {
   const app = express();
   const appServer = server ?? createServer(app);
-  app.get("/api/health", async (_req, res) => {
+  app.get("/api/health", async (_req: any, res: any) => {
     const dbOk = Boolean(ENV.databaseUrl);
     const payments =
       Boolean(ENV.stripeSecretKey && ENV.stripeWebhookSecret) ||
@@ -74,7 +74,7 @@ export async function createApp(server?: Server) {
       },
     });
   });
-  app.post("/api/monitor/demos", async (req, res) => {
+  app.post("/api/monitor/demos", async (req: any, res: any) => {
     try {
       if (!ENV.automationWorkerSecret || req.header("x-numi-worker-secret") !== ENV.automationWorkerSecret) return res.status(401).json({ error: "Unauthorized" });
       const result = await checkPublishedDemos();
@@ -84,7 +84,7 @@ export async function createApp(server?: Server) {
       res.status(500).json({ error: "Demo monitor failed" });
     }
   });
-  app.post("/api/automation/worker", async (req, res) => {
+  app.post("/api/automation/worker", async (req: any, res: any) => {
     try {
       if (!ENV.automationWorkerSecret || req.header("x-numi-worker-secret") !== ENV.automationWorkerSecret) return res.status(401).json({ error: "Unauthorized" });
       const result = await processAutomationJobs(5);
@@ -94,7 +94,7 @@ export async function createApp(server?: Server) {
       res.status(500).json({ error: "Worker failed" });
     }
   });
-  app.post("/api/chargily/webhook", express.json(), async (req, res) => {
+  app.post("/api/chargily/webhook", express.json(), async (req: any, res: any) => {
     try {
       const body = req.body as Record<string, any>;
       const checkoutId = String(body.id ?? body.data?.id ?? body.checkout_id ?? "");
@@ -110,7 +110,7 @@ export async function createApp(server?: Server) {
       res.status(400).json({ error: "Webhook rejected" });
     }
   });
-  app.post("/api/stripe/webhook", express.raw({ type: "application/json" }), async (req, res) => {
+  app.post("/api/stripe/webhook", express.raw({ type: "application/json" }), async (req: any, res: any) => {
     try {
       const result = await handleStripeWebhook(req.body as Buffer, req.header("stripe-signature"));
       res.json(result);
