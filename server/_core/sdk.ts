@@ -7,11 +7,12 @@ import type { User } from "../../drizzle/schema";
 import * as db from "../db";
 import { ENV } from "./env";
 import type {
-  ExchangeTokenRequest,
   ExchangeTokenResponse,
   GetUserInfoResponse,
   GetUserInfoWithJwtRequest,
   GetUserInfoWithJwtResponse,
+  ManusOAuthTokenResponse,
+  ManusUserMeResponse,
 } from "./types/manusTypes";
 // Utility function
 const isNonEmptyString = (value: unknown): value is string =>
@@ -23,54 +24,57 @@ export type SessionPayload = {
   name: string;
 };
 
-const EXCHANGE_TOKEN_PATH = `/webdev.v1.WebDevAuthPublicService/ExchangeToken`;
-const GET_USER_INFO_PATH = `/webdev.v1.WebDevAuthPublicService/GetUserInfo`;
-const GET_USER_INFO_WITH_JWT_PATH = `/webdev.v1.WebDevAuthPublicService/GetUserInfoWithJwt`;
+const OAUTH_TOKEN_PATH = "/oauth/token";
+const USER_ME_PATH = "/v2/user.me";
 
 class OAuthService {
   constructor(private client: ReturnType<typeof axios.create>) {
     console.log("[OAuth] Initialized with baseURL:", ENV.oAuthServerUrl);
     if (!ENV.oAuthServerUrl) {
-      console.error(
-        "[OAuth] ERROR: OAUTH_SERVER_URL is not configured! Set OAUTH_SERVER_URL environment variable."
-      );
+      console.error("[OAuth] ERROR: OAUTH_SERVER_URL is not configured.");
+    }
+    if (!ENV.appId) {
+      console.error("[OAuth] ERROR: VITE_APP_ID is not configured.");
+    }
+    if (!ENV.manusClientSecret) {
+      console.error("[OAuth] ERROR: MANUS_CLIENT_SECRET is not configured.");
     }
   }
 
-  private decodeState(state: string): string {
-    return decodeOAuthState(state).redirectUri;
-  }
-
-  async getTokenByCode(
-    code: string,
-    state: string
-  ): Promise<ExchangeTokenResponse> {
-    const payload: ExchangeTokenRequest = {
-      clientId: ENV.appId,
-      grantType: "authorization_code",
-      code,
-      redirectUri: this.decodeState(state),
-    };
-
-    const { data } = await this.client.post<ExchangeTokenResponse>(
-      EXCHANGE_TOKEN_PATH,
-      payload
-    );
-
-    return data;
-  }
-
-  async getUserInfoByToken(
-    token: ExchangeTokenResponse
-  ): Promise<GetUserInfoResponse> {
-    const { data } = await this.client.post<GetUserInfoResponse>(
-      GET_USER_INFO_PATH,
+  async getTokenByCode(code: string, redirectUri: string): Promise<ManusOAuthTokenResponse> {
+    const { data } = await this.client.post<ManusOAuthTokenResponse>(
+      OAUTH_TOKEN_PATH,
       {
-        accessToken: token.accessToken,
-      }
+        grant_type: "authorization_code",
+        code,
+        redirect_uri: redirectUri,
+        client_id: ENV.appId,
+        client_secret: ENV.manusClientSecret,
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      },
     );
-
     return data;
+  }
+
+  async getUserInfoByToken(accessToken: string): Promise<GetUserInfoResponse> {
+    const { data } = await this.client.get<ManusUserMeResponse>(USER_ME_PATH, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    if (!data?.ok || !data.user_id) {
+      throw new Error(data?.message || "Manus user.me failed");
+    }
+
+    return {
+      openId: data.user_id,
+      projectId: ENV.appId,
+      name: "Manus User",
+      email: null,
+      platform: "manus",
+      loginMethod: "manus",
+    };
   }
 }
 
@@ -116,11 +120,8 @@ class SDKServer {
    * @example
    * const tokenResponse = await sdk.exchangeCodeForToken(code, state);
    */
-  async exchangeCodeForToken(
-    code: string,
-    state: string
-  ): Promise<ExchangeTokenResponse> {
-    return this.oauthService.getTokenByCode(code, state);
+  async exchangeCodeForToken(code: string, redirectUri: string): Promise<ManusOAuthTokenResponse> {
+    return this.oauthService.getTokenByCode(code, redirectUri);
   }
 
   /**
@@ -129,18 +130,7 @@ class SDKServer {
    * const userInfo = await sdk.getUserInfo(tokenResponse.accessToken);
    */
   async getUserInfo(accessToken: string): Promise<GetUserInfoResponse> {
-    const data = await this.oauthService.getUserInfoByToken({
-      accessToken,
-    } as ExchangeTokenResponse);
-    const loginMethod = this.deriveLoginMethod(
-      (data as any)?.platforms,
-      (data as any)?.platform ?? data.platform ?? null
-    );
-    return {
-      ...(data as any),
-      platform: loginMethod,
-      loginMethod,
-    } as GetUserInfoResponse;
+    return this.oauthService.getUserInfoByToken(accessToken);
   }
 
   private parseCookies(cookieHeader: string | undefined) {
