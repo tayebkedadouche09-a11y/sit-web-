@@ -34,7 +34,7 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 
 export async function createApp(server?: Server) {
   const app = express();
-  const server = createServer(app);
+  const appServer = server ?? createServer(app);
   app.get("/api/health", async (_req, res) => {
     const dbOk = Boolean(ENV.databaseUrl);
     const payments =
@@ -134,7 +134,7 @@ export async function createApp(server?: Server) {
   );
   // development mode uses Vite, production mode uses static files
   if (process.env.NODE_ENV === "development") {
-    await setupVite(app, server);
+    await setupVite(app, appServer);
   } else {
     serveStatic(app);
   }
