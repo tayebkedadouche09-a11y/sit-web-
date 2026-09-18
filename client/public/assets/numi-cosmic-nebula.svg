@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000">
+<defs>
+<radialGradient id="n"><stop stop-color="#75b9ff" stop-opacity=".62"/><stop offset=".35" stop-color="#5d67e8" stop-opacity=".26"/><stop offset="1" stop-color="#020714" stop-opacity="0"/></radialGradient>
+<filter id="b"><feGaussianBlur stdDeviation="65"/></filter>
+</defs>
+<rect width="1600" height="1000" fill="#030a18"/>
+<ellipse cx="820" cy="480" rx="620" ry="340" fill="url(#n)" filter="url(#b)"/>
+<ellipse cx="350" cy="780" rx="420" ry="160" fill="#ef8b65" opacity=".12" filter="url(#b)"/>
+<path d="M-100 600C250 350 420 720 700 520S1180 200 1700 500" fill="none" stroke="#83c2ff" stroke-opacity=".16" stroke-width="90" filter="url(#b)"/>
+</svg>
