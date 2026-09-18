@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
-  "installCommand": "node -e \"const fs=require('fs'); const p=require('./package.json'); delete p.dependencies['@aws-sdk/client-s3']; delete p.dependencies['@aws-sdk/s3-request-presigner']; fs.writeFileSync('package.json', JSON.stringify(p,null,2)+'\\n')\" && sed -i 's#http://35\\.245\\.43\\.102/npm/#https://registry.npmjs.org/#g' pnpm-lock.yaml && pnpm install --no-frozen-lockfile",
+  "installCommand": "pnpm install --no-frozen-lockfile --registry=https://registry.npmjs.org",
   "buildCommand": "pnpm build",
   "outputDirectory": "dist/public",
   "rewrites": [
