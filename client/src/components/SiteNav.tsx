@@ -57,11 +57,11 @@ export default function SiteNav() {
 
         {isAuthenticated ? (
           <Link
-            href={user?.role === "admin" ? "/admin" : "/account"}
+            href="/account"
             className="flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-2 text-xs font-semibold text-white/80 transition-colors hover:border-white/30 hover:text-white"
           >
             <UserRound size={14} />
-            {user?.role === "admin" ? t("owner_space") : t("my_space")}
+            {t("my_space")}
           </Link>
         ) : (
           <button
