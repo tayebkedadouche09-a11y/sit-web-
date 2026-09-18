@@ -113,8 +113,8 @@ export default function SiteNav() {
               {t("nav_approach")}
             </a>
             {isAuthenticated ? (
-              <Link href={user?.role === "admin" ? "/admin" : "/account"} onClick={() => setOpen(false)}>
-                {user?.role === "admin" ? t("owner_space") : t("my_space")}
+              <Link href="/account" onClick={() => setOpen(false)}>
+                {t("my_space")}
               </Link>
             ) : (
               <button type="button" className="text-left text-[#83c2ff]" onClick={() => startLogin()}>
