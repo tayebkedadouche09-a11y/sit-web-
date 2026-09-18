@@ -4,8 +4,13 @@ let appPromise: Promise<any> | null = null;
 
 async function getApp() {
   if (!appPromise) {
-    appPromise = import("../server/_core/index")
-      .then(({ createApp }) => createApp())
+    appPromise = import("../dist/index.js")
+      .then(({ createApp }) => {
+        if (typeof createApp !== "function") {
+          throw new Error("NUMI bundled server does not export createApp");
+        }
+        return createApp();
+      })
       .catch(error => {
         console.error("[Vercel] NUMI app initialization failed", error);
         appPromise = null;
