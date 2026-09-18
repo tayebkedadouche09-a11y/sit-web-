@@ -109,9 +109,9 @@ pnpm db:seed
 | المتغير | الوظيفة |
 |---------|---------|
 | `MANUS_API_KEY` | API Key من Manus — **server-side فقط** |
-| `OWNER_OPEN_ID` | اختياري، للتوافق مع منطق الأدمن القديم |
+| `ADMIN_LOGIN_CODE` | كود دخول المالك — **server-side فقط** |
 
-NUMI يتحقق من المفتاح عبر `GET https://api.manus.ai/v2/user.me` باستخدام header `x-manus-api-key`، ثم ينشئ جلسة NUMI لحساب صاحب المفتاح. الـAPI Key لا يدخل إلى المتصفح ولا إلى bundle الواجهة.
+NUMI يتحقق من كود دخول المالك أولاً، ثم يستعمل `GET https://api.manus.ai/v2/user.me` مع `x-manus-api-key` لمعرفة صاحب المفتاح وينشئ له جلسة NUMI بصلاحية Admin. الـAPI Key وكود الدخول يبقيان server-side فقط.
 
 ### ج) الدفع — Chargily (مستحسن للجزائر)
 
