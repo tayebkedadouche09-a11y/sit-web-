@@ -32,7 +32,7 @@
 3. [ ] **GitHub** — حساب/منظمة فيها قوالب المواقع (`sourceRepoUrl`)  
 4. [ ] **Chargily** — للدفع بالدينار (مستحسن)  
 5. [ ] **Stripe / PayPal** — اختياري للخارج  
-6. [ ] مزود **OAuth** (حسب إعداد المشروع)  
+6. [ ] **Manus** — حساب + API Key  
 7. [ ] نطاق domain (اختياري في البداية؛ يمكن البدء بـ `*.vercel.app`)
 
 ### 1.2 جهازك محلياً
@@ -102,24 +102,16 @@ pnpm db:seed
 
 ### ب) الدخول والأدمن
 
-أنشئ Open App من Manus Developers → Open Apps. سجّل Redirect URI بنفس رابط النشر:
+لا تحتاج **Team** ولا **Open App** في نسخة NUMI الحالية. أنشئ API Key من Manus Developers → API settings.
 
-```text
-https://YOUR_PUBLIC_APP_URL/api/oauth/callback
-```
-
-الـOpen App يعطي `client_id` و`client_secret`. ضع `client_id` في `VITE_APP_ID` و`client_secret` في `MANUS_CLIENT_SECRET`. الـclient secret لا يوضع في الواجهة ولا في GitHub.
-
+ضع المفتاح في Vercel كـ Environment Variable server-side:
 
 | المتغير | الوظيفة |
 |---------|---------|
-| `OAUTH_SERVER_URL` | `https://api.manus.ai` |
-| `VITE_OAUTH_PORTAL_URL` | `https://manus.im/openapi/oauth` |
-| `VITE_APP_ID` | `client_id` من Manus Open App |
-| `MANUS_CLIENT_SECRET` | `client_secret` من Manus Open App — server-side فقط |
-| `OWNER_OPEN_ID` | معرّف حسابك فقط → يصبح Admin |
+| `MANUS_API_KEY` | API Key من Manus — **server-side فقط** |
+| `OWNER_OPEN_ID` | اختياري، للتوافق مع منطق الأدمن القديم |
 
-كيف تضبط الأدمن: بعد أول دخول ناجح بحسابك، ضع قيمة الـ subject/open id في `OWNER_OPEN_ID` وأعد النشر. التفاصيل في `docs/OWNER-ACCESS.md`.
+NUMI يتحقق من المفتاح عبر `GET https://api.manus.ai/v2/user.me` باستخدام header `x-manus-api-key`، ثم ينشئ جلسة NUMI لحساب صاحب المفتاح. الـAPI Key لا يدخل إلى المتصفح ولا إلى bundle الواجهة.
 
 ### ج) الدفع — Chargily (مستحسن للجزائر)
 
@@ -223,7 +215,7 @@ Webhook Stripe → نفس `PUBLIC_APP_URL` + مسار webhook Stripe في الم
 2. [ ] `GET /api/health` يرجع ok
 3. [ ] الجداول موجودة في Supabase (Table Editor)
 4. [ ] المنتجات تظهر (بعد seed أو من الأدمن)
-5. [ ] تسجيل الدخول OAuth يعمل
+5. [ ] تسجيل الدخول عبر Manus API Key يعمل
 6. [ ] `/admin` يفتح لحسابك فقط
 7. [ ] منتج تجريبي فيه `sourceRepoUrl` حقيقي
 8. [ ] Chargily **test**: شراء كامل
@@ -294,7 +286,7 @@ Webhook Stripe → نفس `PUBLIC_APP_URL` + مسار webhook Stripe في الم
 
 - [ ] لا ترفع `.env` إلى GitHub أبداً
 - [ ] `JWT_SECRET` و توكنات GitHub/Vercel قوية ومحدودة الصلاحية
-- [ ] `OWNER_OPEN_ID` لحسابك فقط
+- [ ] `MANUS_API_KEY` server-side فقط
 - [ ] ابدأ Chargily test قبل live
 - [ ] ريوهات الزبائن **private**
 - [ ] راجع صلاحيات `GITHUB_TOKEN` دورياً
