@@ -76,6 +76,29 @@ class OAuthService {
       loginMethod: "manus",
     };
   }
+
+  async getUserInfoByApiKey(): Promise<GetUserInfoResponse> {
+    if (!ENV.manusApiKey) {
+      throw new Error("MANUS_API_KEY is not configured");
+    }
+
+    const { data } = await this.client.get<ManusUserMeResponse>(USER_ME_PATH, {
+      headers: { "x-manus-api-key": ENV.manusApiKey },
+    });
+
+    if (!data?.ok || !data.user_id) {
+      throw new Error(data?.message || "Manus API key validation failed");
+    }
+
+    return {
+      openId: data.user_id,
+      projectId: ENV.appId || "manus-api-key",
+      name: "Manus User",
+      email: null,
+      platform: "manus",
+      loginMethod: "manus-api-key",
+    };
+  }
 }
 
 const createOAuthHttpClient = (): AxiosInstance =>
@@ -159,7 +182,7 @@ class SDKServer {
     return this.signSession(
       {
         openId,
-        appId: ENV.appId,
+        appId: ENV.appId || "manus-api-key",
         name: options.name || "",
       },
       options
