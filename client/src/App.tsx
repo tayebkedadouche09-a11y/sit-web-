@@ -12,6 +12,7 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import WhatsAppFloat from "./components/WhatsAppFloat";
 import ProductDetail from "./pages/ProductDetail";
+import SpaceAudioPanel from "./components/SpaceAudioPanel";
 
 function Router() {
   return (
@@ -36,6 +37,7 @@ function App() {
             <TooltipProvider>
               <Toaster />
               <Router />
+              <SpaceAudioPanel />
               <WhatsAppFloat />
             </TooltipProvider>
           </SkyModeProvider>
