@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "wouter";
+import SkyCanvas from "@/components/SkyCanvas";
 import SiteNav from "@/components/SiteNav";
 import { trpc } from "@/lib/trpc";
 import { useLocale } from "@/contexts/LocaleContext";
@@ -124,40 +125,69 @@ export default function Home() {
       <div className="numi-content">
         <SiteNav />
 
-        {/* HERO — short, sales-first */}
-        <section className="relative mx-auto max-w-[1440px] px-5 pb-14 pt-20 md:px-10 md:pb-16 md:pt-24">
-          <div className="mx-auto max-w-3xl text-center">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-white/55">
-              {t("brand_tag")}
+        <SkyCanvas />
+
+        {/* HERO — nature x space */}
+        <section className="cosmic-hero relative mx-auto max-w-[1440px] px-5 pb-20 pt-10 md:px-10 md:pb-24 md:pt-16">
+          <div className="cosmic-hero__aurora" aria-hidden="true" />
+          <div className="cosmic-hero__orbit" aria-hidden="true">
+            <div className="cosmic-hero__planet-ring" />
+            <div className="cosmic-hero__planet">
+              <span className="cosmic-hero__continent cosmic-hero__continent--1" />
+              <span className="cosmic-hero__continent cosmic-hero__continent--2" />
+              <span className="cosmic-hero__continent cosmic-hero__continent--3" />
+              <span className="cosmic-hero__atmosphere" />
             </div>
-            <h1 className="text-balance text-4xl font-semibold leading-[1.08] tracking-[-0.04em] text-white md:text-5xl lg:text-6xl">
-              {t("hero_title_1")}{" "}
-              <span className="bg-gradient-to-r from-[#83c2ff] to-[#f0a07a] bg-clip-text text-transparent">
-                {t("hero_title_2")}
-              </span>
-            </h1>
-            <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-white/55 md:text-lg md:leading-8">
-              {t("hero_sub")}
-            </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <a href="#collection" className="btn-primary">
-                {t("explore_collection")}
-                <ArrowDownRight size={16} />
-              </a>
-              <a href="#delivery" className="btn-ghost">
-                {t("how_it_works")}
-              </a>
+            <span className="cosmic-hero__orbit-dot cosmic-hero__orbit-dot--1" />
+            <span className="cosmic-hero__orbit-dot cosmic-hero__orbit-dot--2" />
+          </div>
+
+          <div className="relative z-10 grid items-center gap-12 lg:grid-cols-[1.02fr_.98fr] lg:gap-16">
+            <div className="max-w-2xl">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/12 bg-black/20 px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-white/60 backdrop-blur-xl">
+                <span className="pulse-dot h-1.5 w-1.5" />
+                {t("brand_tag")}
+              </div>
+              <h1 className="max-w-3xl text-balance text-5xl font-semibold leading-[0.98] tracking-[-0.055em] text-white sm:text-6xl lg:text-7xl">
+                {t("hero_title_1")}{" "}
+                <span className="cosmic-gradient-text">{t("hero_title_2")}</span>
+              </h1>
+              <p className="mt-7 max-w-xl text-base leading-8 text-white/58 md:text-lg md:leading-8">
+                {t("hero_sub")}
+              </p>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a href="#collection" className="btn-primary">{t("explore_collection")}<ArrowDownRight size={16} /></a>
+                <a href="#delivery" className="btn-ghost">{t("how_it_works")}</a>
+              </div>
+
+              <div className="mt-8 flex flex-wrap gap-2">
+                <span className="trust-pill"><Lock size={13} /> {t("trust_ownership")}</span>
+                <span className="trust-pill"><Zap size={13} /> {t("trust_payment")}</span>
+                <span className="trust-pill"><Globe size={13} /> {t("trust_instance")}</span>
+              </div>
             </div>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
-              <span className="trust-pill">
-                <Lock size={13} /> {t("trust_ownership")}
-              </span>
-              <span className="trust-pill">
-                <Zap size={13} /> {t("trust_payment")}
-              </span>
-              <span className="trust-pill">
-                <Globe size={13} /> {t("trust_instance")}
-              </span>
+
+            <div className="cosmic-window">
+              <div className="cosmic-window__topline">
+                <span>NUMI / 01</span>
+                <span className="flex items-center gap-2"><span className="pulse-dot" /> LIVE SKY</span>
+              </div>
+              <div className="cosmic-window__scene">
+                <div className="cosmic-window__starfield" />
+                <div className="cosmic-window__moon" />
+                <div className="cosmic-window__mountain cosmic-window__mountain--far" />
+                <div className="cosmic-window__mountain cosmic-window__mountain--near" />
+                <div className="cosmic-window__forest" />
+                <div className="cosmic-window__caption">
+                  <span>nature / orbit / night</span>
+                  <strong>Quiet technology, wide horizons.</strong>
+                </div>
+              </div>
+              <div className="cosmic-window__footer">
+                <span>Moonlight Sonata · piano</span>
+                <span className="font-mono text-[10px] text-white/35">01:00 / 05:42</span>
+              </div>
             </div>
           </div>
         </section>
