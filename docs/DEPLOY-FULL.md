@@ -104,7 +104,8 @@ pnpm db:seed
 
 | المتغير | الوظيفة |
 |---------|---------|
-| `OAUTH_SERVER_URL` | عنوان خادم OAuth |
+| `OAUTH_SERVER_URL` | عنوان API لخادم OAuth |
+| `VITE_OAUTH_PORTAL_URL` | عنوان بوابة تسجيل الدخول التي تُفتح في المتصفح |
 | `VITE_APP_ID` | معرّف التطبيق للواجهة |
 | `OWNER_OPEN_ID` | معرّف حسابك فقط → يصبح Admin |
 
