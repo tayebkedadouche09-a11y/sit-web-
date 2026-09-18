@@ -3,6 +3,7 @@ import express from "express";
 import { createServer, type Server } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
+import { sql } from "drizzle-orm";
 import { registerManusApiKeyAuthRoute } from "./manusApiKeyAuth";
 import { registerStorageProxy } from "./storageProxy";
 import { appRouter } from "../routers";
@@ -10,7 +11,7 @@ import { createContext } from "./context";
 import { serveStatic } from "./static";
 import { handleStripeWebhook } from "../stripe";
 import { verifyChargilyCheckout } from "../chargily";
-import { processAutomationJobs, checkPublishedDemos, markOrderPaid, markOrderPaymentFailed } from "../db";
+import { processAutomationJobs, checkPublishedDemos, markOrderPaid, markOrderPaymentFailed, getDb } from "../db";
 import { ENV } from "./env";
 
 function isPortAvailable(port: number): Promise<boolean> {
@@ -36,7 +37,16 @@ export async function createApp(server?: Server) {
   const app = express();
 
   app.get("/api/health", async (_req: any, res: any) => {
-    const dbOk = Boolean(ENV.databaseUrl);
+    let dbOk = false;
+    try {
+      const db = await getDb();
+      if (db) {
+        await db.execute(sql`select 1`);
+        dbOk = true;
+      }
+    } catch (error) {
+      console.error("[Health] Database connectivity check failed", error);
+    }
     const payments =
       Boolean(ENV.stripeSecretKey && ENV.stripeWebhookSecret) ||
       Boolean(ENV.chargilySecretKey) ||
