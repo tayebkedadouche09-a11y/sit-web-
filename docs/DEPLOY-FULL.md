@@ -13,7 +13,7 @@
 | **قاعدة البيانات** | **Supabase فقط** (PostgreSQL) | المستخدمون، المنتجات، الطلبات، التسليم |
 | **نسخ الزبائن** | GitHub (ريبو خاص) + Vercel (مشروع لكل زبون) | النسخة المستقلة بعد الدفع |
 | **الدفع** | Chargily (الجزائر) و/أو Stripe / PayPal | تحصيل الثمن |
-| **الدخول** | مزود OAuth الخاص بالمشروع | تسجيل الزبائن + أدمنك |
+| **الدخول** | Manus API Key (server-side) | دخول مالك/أدمن المتجر |
 | **الدعم** | واتساب (اختياري) | زر عائم |
 
 **قاعدة ذهبية:**  
@@ -322,7 +322,7 @@ Webhook Stripe → نفس `PUBLIC_APP_URL` + مسار webhook Stripe في الم
 □ جداول push + منتجات حقيقية في الأدمن
 □ كل منتج: demoUrl + sourceRepoUrl + native
 □ PUBLIC_APP_URL = رابط النشر النهائي
-□ JWT + OAuth + OWNER_OPEN_ID
+□ JWT + MANUS_API_KEY
 □ Chargily test ناجح end-to-end
 □ GITHUB_* + VERCEL_* مضبوطة
 □ FEATURE_NATIVE_PROVISIONING=true
