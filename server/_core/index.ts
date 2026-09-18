@@ -4,6 +4,7 @@ import { createServer, type Server } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerManusApiKeyAuthRoute } from "./manusApiKeyAuth";
+import { registerOAuthRoutes } from "./oauth";
 import { registerStorageProxy } from "./storageProxy";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
@@ -158,6 +159,7 @@ export async function createApp(server?: Server) {
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   registerStorageProxy(app);
   registerManusApiKeyAuthRoute(app);
+  registerOAuthRoutes(app);
 
   app.use(
     "/api/trpc",
