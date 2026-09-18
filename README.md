@@ -42,3 +42,6 @@ bash scripts/staging-verify.sh   # requires staging secrets
 ## Version
 
 See `VERSION.md`. Do not mix with V1/V4 runtimes — they are not active.
+
+
+<!-- NUMI production sync: owner-auth hardening -->
