@@ -4,7 +4,6 @@ import { Link } from "wouter";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { startLogin } from "@/const";
 import { useLocale, type Locale } from "@/contexts/LocaleContext";
-import AmbientToggle from "@/components/AmbientToggle";
 
 const LOCALES: { id: Locale; label: string }[] = [
   { id: "ar", label: "ع" },
@@ -41,7 +40,6 @@ export default function SiteNav() {
       </nav>
 
       <div className="hidden items-center gap-3 md:flex">
-        <AmbientToggle />
         <div className="flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.03] p-1">
           {LOCALES.map((l) => (
             <button
@@ -89,7 +87,6 @@ export default function SiteNav() {
       {open && (
         <div className="absolute left-4 right-4 top-[68px] rounded-2xl border border-white/12 bg-[#0a1628]/96 p-5 shadow-2xl backdrop-blur-xl md:hidden">
           <div className="mb-4 flex items-center justify-between gap-2">
-            <AmbientToggle />
             <div className="flex gap-2">
             {LOCALES.map((l) => (
               <button
