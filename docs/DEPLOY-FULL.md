@@ -102,11 +102,21 @@ pnpm db:seed
 
 ### ب) الدخول والأدمن
 
+أنشئ Open App من Manus Developers → Open Apps. سجّل Redirect URI بنفس رابط النشر:
+
+```text
+https://YOUR_PUBLIC_APP_URL/api/oauth/callback
+```
+
+الـOpen App يعطي `client_id` و`client_secret`. ضع `client_id` في `VITE_APP_ID` و`client_secret` في `MANUS_CLIENT_SECRET`. الـclient secret لا يوضع في الواجهة ولا في GitHub.
+
+
 | المتغير | الوظيفة |
 |---------|---------|
-| `OAUTH_SERVER_URL` | عنوان API لخادم OAuth |
-| `VITE_OAUTH_PORTAL_URL` | عنوان بوابة تسجيل الدخول التي تُفتح في المتصفح |
-| `VITE_APP_ID` | معرّف التطبيق للواجهة |
+| `OAUTH_SERVER_URL` | `https://api.manus.ai` |
+| `VITE_OAUTH_PORTAL_URL` | `https://manus.im/openapi/oauth` |
+| `VITE_APP_ID` | `client_id` من Manus Open App |
+| `MANUS_CLIENT_SECRET` | `client_secret` من Manus Open App — server-side فقط |
 | `OWNER_OPEN_ID` | معرّف حسابك فقط → يصبح Admin |
 
 كيف تضبط الأدمن: بعد أول دخول ناجح بحسابك، ضع قيمة الـ subject/open id في `OWNER_OPEN_ID` وأعد النشر. التفاصيل في `docs/OWNER-ACCESS.md`.
