@@ -4,6 +4,7 @@ import { createServer, type Server } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerOAuthRoutes } from "./oauth";
+import { registerManusApiKeyAuthRoute } from "./manusApiKeyAuth";
 import { registerStorageProxy } from "./storageProxy";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
@@ -59,7 +60,7 @@ export async function createApp(server?: Server) {
         github_vercel_provisioning: provision ? "ok" : "not_configured",
         backup: backup ? "ok" : "not_configured",
         jwt: Boolean(ENV.cookieSecret) ? "ok" : "missing",
-        oauth: Boolean(ENV.oAuthServerUrl && ENV.appId && ENV.oauthPortalUrl && ENV.manusClientSecret) ? "ok" : "not_configured",
+        manus_api_key: Boolean(ENV.manusApiKey) ? "ok" : "not_configured",
         publicAppUrl: Boolean(ENV.appOrigin) ? "ok" : "missing",
       },
       integrations: {
@@ -69,7 +70,7 @@ export async function createApp(server?: Server) {
         paypal: Boolean(ENV.paypalClientId && ENV.paypalClientSecret && ENV.appOrigin),
         github: Boolean(ENV.githubToken && ENV.githubOwner),
         vercel: Boolean(ENV.vercelToken),
-        oauth: Boolean(ENV.oAuthServerUrl && ENV.appId && ENV.oauthPortalUrl && ENV.manusClientSecret),
+        manusApiKey: Boolean(ENV.manusApiKey),
         externalProvisioning: Boolean(ENV.provisioningApiUrl && ENV.provisioningApiKey),
         automationWorker: Boolean(ENV.automationWorkerSecret),
         backup,
@@ -125,7 +126,7 @@ export async function createApp(server?: Server) {
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   registerStorageProxy(app);
-  registerOAuthRoutes(app);
+  registerManusApiKeyAuthRoute(app);
   // tRPC API
   app.use(
     "/api/trpc",
