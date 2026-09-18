@@ -22,17 +22,17 @@ export function registerOAuthRoutes(app: any) {
     // CSRF guard: the nonce in `state` must match the one-time cookie that
     // startLogin set in the browser that began this login. An attacker can
     // forge `state`, but cannot plant this cookie in the victim's browser.
-    const { nonce } = decodeOAuthState(state);
+    const { nonce, redirectUri } = decodeOAuthState(state);
     const expectedNonce = parseCookieHeader(req.headers.cookie ?? "")[OAUTH_STATE_COOKIE];
-    if (!nonce || nonce !== expectedNonce) {
+    if (!nonce || nonce !== expectedNonce || !redirectUri || redirectUri !== `${req.protocol}://${req.get("host")}/api/oauth/callback`) {
       res.status(403).json({ error: "invalid oauth state" });
       return;
     }
     res.clearCookie(OAUTH_STATE_COOKIE, { path: "/", secure: true, sameSite: "none" });
 
     try {
-      const tokenResponse = await sdk.exchangeCodeForToken(code, state);
-      const userInfo = await sdk.getUserInfo(tokenResponse.accessToken);
+      const tokenResponse = await sdk.exchangeCodeForToken(code, redirectUri);
+      const userInfo = await sdk.getUserInfo(tokenResponse.access_token);
 
       if (!userInfo.openId) {
         res.status(400).json({ error: "openId missing from user info" });
