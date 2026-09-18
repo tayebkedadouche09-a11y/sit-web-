@@ -13,7 +13,7 @@ const LOCALES: { id: Locale; label: string }[] = [
 
 export default function SiteNav() {
   const [open, setOpen] = useState(false);
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { t, locale, setLocale } = useLocale();
 
   return (
