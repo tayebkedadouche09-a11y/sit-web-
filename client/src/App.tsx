@@ -21,7 +21,7 @@ function Router() {
       <Route path="/websites/:slug" component={ProductDetail} />
       <Route path="/categories/:slug" component={Category} />
       <Route path="/account" component={Account} />
-      <Route path="/admin" component={Admin} />
+      <Route path="/numi-owner-console-9x7k2" component={Admin} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
