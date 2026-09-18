@@ -43,7 +43,17 @@ const trpcClient = trpc.createClient({
     httpBatchLink({
       url: "/api/trpc",
       transformer: superjson,
-      headers() {
+      async headers() {
+        // Supabase is the primary NUMI auth system. Always prefer the current
+        // Supabase session so a stale legacy Manus token cannot shadow it.
+        try {
+          const { data } = await supabase.auth.getSession();
+          if (data.session?.access_token) {
+            return { Authorization: "Bearer " + data.session.access_token };
+          }
+        } catch {}
+
+        // Legacy Manus sessions remain only as a fallback for older owner sessions.
         try {
           const raw = sessionStorage.getItem("manus-cookie");
           if (raw) {
@@ -53,9 +63,8 @@ const trpcClient = trpc.createClient({
             if (token) return { Authorization: "Bearer " + token };
           }
         } catch {}
-        return supabase.auth.getSession().then(({ data }) =>
-          data.session ? { Authorization: "Bearer " + data.session.access_token } : {}
-        );
+
+        return {};
       },
       fetch(input, init) {
         return globalThis.fetch(input, {
