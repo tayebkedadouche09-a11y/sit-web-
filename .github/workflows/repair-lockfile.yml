@@ -1,0 +1,46 @@
+name: Repair pnpm registry URLs
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  repair-lockfile:
+    if: ${{ github.event.head_commit.message != 'chore: repair pnpm lockfile registry URLs' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.4.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - name: Repair tarball registry URLs
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path("pnpm-lock.yaml")
+          s = p.read_text()
+          old = "http://35.245.43.102/npm/"
+          new = "https://registry.npmjs.org/"
+          count = s.count(old)
+          if count:
+              p.write_text(s.replace(old, new))
+              print(f"Repaired {count} registry URLs")
+          else:
+              print("No legacy registry URLs found")
+          PY
+      - name: Validate lockfile
+        run: pnpm install --frozen-lockfile --lockfile-only
+      - name: Commit repair
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pnpm-lock.yaml
+          git diff --cached --quiet || git commit -m "chore: repair pnpm lockfile registry URLs"
+          git push
