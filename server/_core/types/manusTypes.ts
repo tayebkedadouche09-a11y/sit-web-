@@ -69,3 +69,19 @@ export interface GetUserInfoWithJwtResponse {
   /** Cron-only; references `schedule_task.uid`. */
   taskUid?: string | null;
 }
+
+
+export interface ManusOAuthTokenResponse {
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+  refresh_token?: string;
+  scope?: string;
+}
+
+export interface ManusUserMeResponse {
+  ok: boolean;
+  request_id: string;
+  message: string;
+  user_id: string;
+}
