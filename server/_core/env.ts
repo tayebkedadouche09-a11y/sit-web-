@@ -14,6 +14,7 @@ export const ENV = {
   appId: first(process.env.VITE_APP_ID),
   cookieSecret: first(process.env.JWT_SECRET, process.env.AUTH_SECRET, process.env.SESSION_SECRET),
   databaseUrl: first(process.env.DATABASE_URL),
+  manusApiKey: first(process.env.MANUS_API_KEY),
   oAuthServerUrl: first(process.env.OAUTH_SERVER_URL) || "https://api.manus.ai",
   oauthPortalUrl: first(process.env.VITE_OAUTH_PORTAL_URL) || "https://manus.im/openapi/oauth",
   manusClientSecret: first(process.env.MANUS_CLIENT_SECRET),
