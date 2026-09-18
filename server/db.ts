@@ -139,7 +139,7 @@ async function seedCatalog() {
     }).returning({ id: products.id });
     const productId = inserted[0]?.id;
     if (!productId) continue;
-    await db.insert(productFeatures).values(item.features.map(([title, description], index) => ({ productId, title, description, sortOrder: index })));
+    await db.insert(productFeatures).values(item.features.map((feature, index) => ({ productId, title: feature[0], description: feature[1], sortOrder: index })));
     await db.insert(productTechStack).values(item.tech.map((name, index) => ({ productId, name, sortOrder: index })));
     await db.insert(productImages).values([
       { productId, url: item.heroImage, alt: `${item.name} primary website preview`, kind: "hero", sortOrder: 0 },
