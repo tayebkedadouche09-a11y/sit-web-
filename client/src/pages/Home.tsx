@@ -127,69 +127,30 @@ export default function Home() {
 
         <SkyCanvas />
 
-        {/* HERO — nature x space */}
-        <section className="cosmic-hero relative mx-auto max-w-[1440px] px-5 pb-20 pt-10 md:px-10 md:pb-24 md:pt-16">
-          <div className="cosmic-hero__aurora" aria-hidden="true" />
-          <div className="cosmic-hero__orbit" aria-hidden="true">
-            <div className="cosmic-hero__planet-ring" />
-            <div className="cosmic-hero__planet">
-              <span className="cosmic-hero__continent cosmic-hero__continent--1" />
-              <span className="cosmic-hero__continent cosmic-hero__continent--2" />
-              <span className="cosmic-hero__continent cosmic-hero__continent--3" />
-              <span className="cosmic-hero__atmosphere" />
+        <section className="space-hero relative mx-auto flex min-h-[92vh] max-w-[1500px] items-center px-5 pb-24 pt-24 md:px-10">
+          <div className="space-hero__content">
+            <div className="space-kicker">
+              <span className="space-kicker__dot" />
+              NUMI / OPEN SPACE
             </div>
-            <span className="cosmic-hero__orbit-dot cosmic-hero__orbit-dot--1" />
-            <span className="cosmic-hero__orbit-dot cosmic-hero__orbit-dot--2" />
-          </div>
-
-          <div className="relative z-10 grid items-center gap-12 lg:grid-cols-[1.02fr_.98fr] lg:gap-16">
-            <div className="max-w-2xl">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/12 bg-black/20 px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-white/60 backdrop-blur-xl">
-                <span className="pulse-dot h-1.5 w-1.5" />
-                {t("brand_tag")}
-              </div>
-              <h1 className="max-w-3xl text-balance text-5xl font-semibold leading-[0.98] tracking-[-0.055em] text-white sm:text-6xl lg:text-7xl">
-                {t("hero_title_1")}{" "}
-                <span className="cosmic-gradient-text">{t("hero_title_2")}</span>
-              </h1>
-              <p className="mt-7 max-w-xl text-base leading-8 text-white/58 md:text-lg md:leading-8">
-                {t("hero_sub")}
-              </p>
-
-              <div className="mt-8 flex flex-wrap gap-3">
-                <a href="#collection" className="btn-primary">{t("explore_collection")}<ArrowDownRight size={16} /></a>
-                <a href="#delivery" className="btn-ghost">{t("how_it_works")}</a>
-              </div>
-
-              <div className="mt-8 flex flex-wrap gap-2">
-                <span className="trust-pill"><Lock size={13} /> {t("trust_ownership")}</span>
-                <span className="trust-pill"><Zap size={13} /> {t("trust_payment")}</span>
-                <span className="trust-pill"><Globe size={13} /> {t("trust_instance")}</span>
-              </div>
+            <h1 className="max-w-4xl text-balance text-5xl font-semibold leading-[0.93] tracking-[-0.06em] text-white sm:text-6xl lg:text-8xl">
+              {t("hero_title_1")}{" "}
+              <span className="cosmic-gradient-text">{t("hero_title_2")}</span>
+            </h1>
+            <p className="mt-7 max-w-2xl text-base leading-8 text-white/58 md:text-lg">
+              {t("hero_sub")}
+            </p>
+            <div className="mt-9 flex flex-wrap gap-3">
+              <a href="#collection" className="btn-primary">{t("explore_collection")}<ArrowDownRight size={16} /></a>
+              <a href="#delivery" className="btn-ghost">{t("how_it_works")}</a>
             </div>
-
-            <div className="cosmic-window">
-              <div className="cosmic-window__topline">
-                <span>NUMI / 01</span>
-                <span className="flex items-center gap-2"><span className="pulse-dot" /> LIVE SKY</span>
-              </div>
-              <div className="cosmic-window__scene">
-                <div className="cosmic-window__starfield" />
-                <div className="cosmic-window__moon" />
-                <div className="cosmic-window__mountain cosmic-window__mountain--far" />
-                <div className="cosmic-window__mountain cosmic-window__mountain--near" />
-                <div className="cosmic-window__forest" />
-                <div className="cosmic-window__caption">
-                  <span>nature / orbit / night</span>
-                  <strong>Quiet technology, wide horizons.</strong>
-                </div>
-              </div>
-              <div className="cosmic-window__footer">
-                <span>Moonlight Sonata · piano</span>
-                <span className="font-mono text-[10px] text-white/35">01:00 / 05:42</span>
-              </div>
+            <div className="mt-8 flex flex-wrap gap-2">
+              <span className="trust-pill"><Lock size={13} /> {t("trust_ownership")}</span>
+              <span className="trust-pill"><Zap size={13} /> {t("trust_payment")}</span>
+              <span className="trust-pill"><Globe size={13} /> {t("trust_instance")}</span>
             </div>
           </div>
+          <div className="space-hero__scanline" aria-hidden="true" />
         </section>
 
         {/* COLLECTION */}
