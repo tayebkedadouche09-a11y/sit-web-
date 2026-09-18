@@ -3,6 +3,7 @@ import { parse as parseCookieHeader } from "cookie";
 import * as db from "../db";
 import { getSessionCookieOptions } from "./cookies";
 import { sdk } from "./sdk";
+import { ENV } from "./env";
 
 function getQueryParam(req: any, key: string): string | undefined {
   const value = req.query[key];
@@ -24,7 +25,8 @@ export function registerOAuthRoutes(app: any) {
     // forge `state`, but cannot plant this cookie in the victim's browser.
     const { nonce, redirectUri } = decodeOAuthState(state);
     const expectedNonce = parseCookieHeader(req.headers.cookie ?? "")[OAUTH_STATE_COOKIE];
-    if (!nonce || nonce !== expectedNonce || !redirectUri || redirectUri !== `${req.protocol}://${req.get("host")}/api/oauth/callback`) {
+    const expectedRedirectUri = `${ENV.appOrigin}/api/oauth/callback`;
+    if (!nonce || nonce !== expectedNonce || !redirectUri || redirectUri !== expectedRedirectUri) {
       res.status(403).json({ error: "invalid oauth state" });
       return;
     }
