@@ -11,6 +11,7 @@ import Category from "./pages/Category";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import WhatsAppFloat from "./components/WhatsAppFloat";
+import SkyCanvas from "./components/SkyCanvas";
 import ProductDetail from "./pages/ProductDetail";
 
 function Router() {
@@ -35,6 +36,7 @@ function App() {
           <SkyModeProvider>
             <TooltipProvider>
               <Toaster />
+              <SkyCanvas />
               <Router />
               <WhatsAppFloat />
             </TooltipProvider>
