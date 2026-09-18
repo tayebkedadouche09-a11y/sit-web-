@@ -5,7 +5,7 @@ export type LandscapeBiome = "space" | "coast" | "mountains" | "desert" | "plain
 
 /** Biome follows time-of-day mood — lightweight, no images */
 function biomeFor(period: SkyPeriod, weather: WeatherKind): LandscapeBiome {
-  if (period === "night" || period === "dusk") return weather === "clear" ? "space" : "mountains";
+  if (period === "night" || period === "dusk") return "space";
   if (period === "dawn" || period === "sunrise") return "coast";
   if (period === "golden" || period === "sunset") return "desert";
   if (weather === "rain" || weather === "overcast") return "mountains";
