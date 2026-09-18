@@ -46,11 +46,9 @@ h1{margin:0 0 8px;font-size:24px}p{color:#aab1c5;line-height:1.5}label{display:b
 
 export function registerManusApiKeyAuthRoute(app: any) {
   app.get("/api/auth/manus-key/login", async (_req: any, res: any) => {
-    if (!ENV.manusApiKey || !ENV.adminLoginCode) {
-      res.status(503).send("NUMI owner login is not configured. Set MANUS_API_KEY and ADMIN_LOGIN_CODE in Vercel.");
-      return;
-    }
-    res.status(200).type("html").send(loginPage());
+    // Legacy owner-login endpoint: customer authentication no longer uses Manus.
+    // Keep the old URL safe by sending owners to the dedicated, protected console.
+    res.redirect(302, "/numi-owner-console-9x7k2");
   });
 
   app.post("/api/auth/manus-key/login", async (req: any, res: any) => {
