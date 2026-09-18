@@ -9,6 +9,7 @@ import Account from "./pages/Account";
 import Admin from "./pages/Admin";
 import Category from "./pages/Category";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import WhatsAppFloat from "./components/WhatsAppFloat";
 import ProductDetail from "./pages/ProductDetail";
@@ -18,6 +19,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/login" component={Login} />
       <Route path="/websites/:slug" component={ProductDetail} />
       <Route path="/categories/:slug" component={Category} />
       <Route path="/account" component={Account} />
