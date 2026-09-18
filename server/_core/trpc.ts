@@ -32,7 +32,17 @@ export const adminProcedure = t.procedure.use(
   t.middleware(async opts => {
     const { ctx, next } = opts;
 
-    if (!ctx.user || ctx.user.role !== "admin" || !ENV.ownerOpenId || ctx.user.openId !== ENV.ownerOpenId) {
+    const isSupabaseOwner =
+      ctx.user?.role === "admin" && ctx.user.openId.startsWith("supabase:");
+    const isLegacyOwner =
+      ctx.user?.role === "admin" &&
+      Boolean(ENV.ownerOpenId) &&
+      ctx.user.openId === ENV.ownerOpenId;
+
+    // Supabase is the primary NUMI auth system. A server-side admin role on a
+    // Supabase identity is the owner authorization path; OWNER_OPEN_ID remains
+    // supported for legacy Manus owner sessions.
+    if (!ctx.user || ctx.user.role !== "admin" || (!isSupabaseOwner && !isLegacyOwner)) {
       throw new TRPCError({ code: "FORBIDDEN", message: NOT_ADMIN_ERR_MSG });
     }
 
