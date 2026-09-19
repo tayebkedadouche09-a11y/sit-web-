@@ -1,6 +1,7 @@
 import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
 import type { User } from "../../drizzle/schema";
 import { sdk } from "./sdk";
+import { ENV } from "./env";
 import * as db from "../db";
 
 const SUPABASE_URL =
@@ -41,6 +42,11 @@ async function authenticateSupabase(req: any): Promise<User | null> {
         null,
       email: identity.email || null,
       loginMethod: identity.app_metadata?.provider || "supabase",
+      role:
+        identity.id === ENV.ownerOpenId ||
+        ("supabase:" + identity.id) === ENV.ownerOpenId
+          ? "admin"
+          : undefined,
       lastSignedIn: new Date(),
     });
   } catch {
